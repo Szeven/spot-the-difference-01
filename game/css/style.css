@@ -1,0 +1,295 @@
+/* Lighthouse Cove — Spot the Difference: presentation.
+   Warm seaside palette, deep-navy header, cream stage. The two picture
+   panels sit side by side so the judge's screenshots read at a glance. */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #0e2a3f;
+  color: #f4ead8;
+  font-family: "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+}
+
+#app {
+  width: 1280px;
+  margin: 0 auto;
+  padding: 10px 16px 8px;
+}
+
+/* ---- header / HUD ---- */
+#hud {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 6px 4px 10px;
+  border-bottom: 3px solid #f2b705;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: 1px;
+  color: #ffd95e;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+}
+
+.brand .tagline {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #9fd8e8;
+}
+
+.hud-stats {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  justify-content: center;
+}
+
+.stat {
+  background: #12394f;
+  border: 1px solid #2a5a75;
+  border-radius: 10px;
+  padding: 6px 12px;
+  text-align: center;
+  min-width: 86px;
+}
+
+.stat .label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #8fb8c9;
+}
+
+.stat .value {
+  display: block;
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff7e0;
+}
+
+.stat .value.danger { color: #ff7a6b; }
+
+.hud-buttons { display: flex; gap: 8px; }
+
+.hud-buttons button {
+  font: inherit;
+  font-size: 14px;
+  font-weight: bold;
+  color: #12303f;
+  background: #ffd95e;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 12px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #b98a00;
+}
+
+.hud-buttons button:active { transform: translateY(2px); box-shadow: 0 1px 0 #b98a00; }
+.hud-buttons button:disabled { opacity: 0.45; cursor: default; }
+.hud-buttons button:focus-visible, .overlay-card button:focus-visible {
+  outline: 3px solid #37e0ff;
+  outline-offset: 2px;
+}
+
+/* ---- stage: two panels ---- */
+#stage {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding-top: 12px;
+  position: relative;
+}
+
+.panel {
+  position: relative;
+  width: 600px;
+  background: #f7efdc;
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.panel-tag {
+  position: absolute;
+  top: -11px;
+  left: 16px;
+  background: #f2b705;
+  color: #12303f;
+  font-weight: bold;
+  font-size: 13px;
+  letter-spacing: 1px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  z-index: 3;
+}
+
+.panel canvas {
+  display: block;
+  width: 580px;
+  height: 435px;
+  border-radius: 8px;
+  cursor: crosshair;
+  background: #bfe3ee;
+}
+
+.markers { position: absolute; inset: 10px; pointer-events: none; }
+
+.ring {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  border: 4px solid #ffcf00;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255, 80, 40, 0.85), 0 0 14px rgba(255, 207, 0, 0.9);
+  animation: ringPop 0.35s ease-out;
+}
+
+.ring.hint-ring {
+  border-color: #37e0ff;
+  box-shadow: 0 0 0 3px rgba(55, 224, 255, 0.8), 0 0 16px rgba(55, 224, 255, 0.9);
+  animation: hintPulse 0.7s ease-in-out infinite;
+}
+
+@keyframes ringPop {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes hintPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.55; }
+}
+
+.miss {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  color: #ff3b30;
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 34px;
+  text-align: center;
+  text-shadow: 0 0 6px #fff;
+  animation: missFade 0.6s ease-out forwards;
+}
+
+@keyframes missFade {
+  from { opacity: 1; transform: scale(1.3); }
+  to { opacity: 0; transform: scale(0.8); }
+}
+
+.crosshair {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.crosshair::before, .crosshair::after {
+  content: "";
+  position: absolute;
+  background: #ffcf00;
+  box-shadow: 0 0 4px #000;
+}
+
+.crosshair::before { left: 16px; top: 0; width: 2px; height: 34px; }
+.crosshair::after { left: 0; top: 16px; width: 34px; height: 2px; }
+
+/* ---- combo popup ---- */
+.combo-pop {
+  position: absolute;
+  left: 50%;
+  top: 330px;
+  transform: translateX(-50%);
+  background: #ff5a3c;
+  color: #fff;
+  font-size: 26px;
+  font-weight: bold;
+  padding: 8px 22px;
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  z-index: 6;
+  animation: popUp 0.9s ease-out forwards;
+}
+
+@keyframes popUp {
+  0% { opacity: 0; transform: translate(-50%, 12px) scale(0.8); }
+  20% { opacity: 1; transform: translate(-50%, 0) scale(1.05); }
+  100% { opacity: 0; transform: translate(-50%, -18px) scale(1); }
+}
+
+/* ---- footer help ---- */
+#helpBar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 6px 0;
+  font-size: 13px;
+  color: #b9d6e2;
+}
+
+#helpBar b { color: #ffd95e; }
+
+/* ---- overlays: start / level / win / pause ---- */
+.overlay[hidden] { display: none; }
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 24, 36, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.overlay-card {
+  width: 640px;
+  max-width: 92vw;
+  background: linear-gradient(180deg, #fff8e6, #ffe9b0);
+  color: #17384a;
+  border-radius: 18px;
+  padding: 28px 34px;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  border: 4px solid #f2b705;
+}
+
+.overlay-card h2 {
+  margin: 0 0 6px;
+  font-size: 38px;
+  color: #0e2a3f;
+}
+
+.overlay-card h3 { margin: 0 0 10px; font-size: 22px; color: #b3541e; }
+.overlay-card p { margin: 8px 0; font-size: 16px; line-height: 1.45; }
+.overlay-card .big-score { font-size: 30px; font-weight: bold; color: #b3541e; }
+.overlay-card .level-list { text-align: left; display: inline-block; margin: 6px auto; }
+.overlay-card .level-list li { margin: 4px 0; font-size: 15px; }
+.overlay-card button {
+  font: inherit;
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff;
+  background: #e85d3d;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 28px;
+  margin-top: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #a83a22;
+}
+
+.overlay-card button:active { transform: translateY(2px); box-shadow: 0 2px 0 #a83a22; }
+.overlay-card .keys { font-size: 13px; color: #5a6b75; }

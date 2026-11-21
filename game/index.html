@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Lighthouse Cove — an original spot-the-difference game. Three hand-drawn scenes, two pictures side by side, find every hidden difference before the clock runs out.">
+<title>Lighthouse Cove — Spot the Difference</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <header id="hud">
+    <div class="brand">
+      <h1>Lighthouse Cove</h1>
+      <p class="tagline">Spot the Difference</p>
+    </div>
+    <div class="hud-stats">
+      <div class="stat"><span class="label">Level</span><span id="levelName" class="value">1 · Lighthouse Cove</span></div>
+      <div class="stat"><span class="label">Found</span><span id="foundCount" class="value">0 / 7</span></div>
+      <div class="stat"><span class="label">Still hidden</span><span id="leftCount" class="value">7 to go</span></div>
+      <div class="stat"><span class="label">Time</span><span id="timer" class="value">2:30</span></div>
+      <div class="stat"><span class="label">Score</span><span id="score" class="value">0</span></div>
+    </div>
+    <div class="hud-buttons">
+      <button id="hintBtn" type="button" title="Hint (H)">💡 Hint <span id="hintCount">3</span></button>
+      <button id="soundBtn" type="button" title="Sound on/off (M)">🔊 Sound</button>
+      <button id="restartBtn" type="button" title="Restart level (R)">↻ Restart</button>
+    </div>
+  </header>
+
+  <main id="stage">
+    <section class="panel" id="panelLeft">
+      <div class="panel-tag">Original</div>
+      <canvas id="canvasLeft" width="600" height="450"></canvas>
+      <div class="markers" id="markersLeft"></div>
+      <div class="crosshair" id="crossLeft" hidden></div>
+    </section>
+    <section class="panel" id="panelRight">
+      <div class="panel-tag">Changed</div>
+      <canvas id="canvasRight" width="600" height="450"></canvas>
+      <div class="markers" id="markersRight"></div>
+      <div class="crosshair" id="crossRight" hidden></div>
+    </section>
+  </main>
+
+  <div id="comboPop" class="combo-pop" hidden></div>
+
+  <footer id="helpBar">
+    <span>Click a difference in either picture — or move with <b>← ↑ ↓ →</b>, switch picture with <b>Tab</b>, pick with <b>Enter</b>.</span>
+    <span><b>H</b> hint · <b>M</b> sound · <b>R</b> restart · <b>P</b> pause</span>
+  </footer>
+
+  <div id="overlay" class="overlay" hidden>
+    <div class="overlay-card" id="overlayCard"></div>
+  </div>
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
